@@ -1,9 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { ImageBackground, View ,StyleSheet} from "react-native";
-import { Dimensions } from "react-native";
-
-const width = Dimensions.get("window").width; //full width
-const height = Dimensions.get("window").height; //full height
 
 const Header = () => {
   return (
@@ -23,12 +19,12 @@ const Header = () => {
 const styles = StyleSheet.create({
   bgImage: {
     flex: 3 / 10,
-    width: width,
+    width: '100%',
     shadowColor: "black",
   },
   bgOpaque: {
     flex: 1,
-    width: width,
+    width: '100%',
     backgroundColor: "rgba(1,1,1,0.3)",
   }
 })

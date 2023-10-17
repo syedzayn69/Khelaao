@@ -1,21 +1,23 @@
-import { Text, View, SafeAreaView, StyleSheet,  } from "react-native";
+import { Text, View, SafeAreaView, StyleSheet } from "react-native";
 import Header from "../components/loginPage/Header";
 import Footer from "../components/loginPage/Footer";
-import Form from "../components/loginForm/LoginForm"
-import HeadingLine from "../components/loginPage/Heading"
+import Form from "../components/loginForm/LoginForm";
+import HeadingLine from "../components/loginPage/Heading";
 
 export default function HelloWorld() {
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Header />
-        <View style={styles.body}>
-        <HeadingLine headingText={"LOGIN"} />
-          <Form />
+    <>
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Header />
+          <View style={styles.body}>
+            <HeadingLine headingText={"LOGIN"} />
+            <Form />
+          </View>
+          <Footer />
         </View>
-        <Footer />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -27,7 +29,10 @@ const styles = StyleSheet.create({
   },
   body: {
     alignItems: "center",
-    flex: 8 / 10,
+    alignSelf: "center",
+    flex: 6 / 10,
+    paddingHorizontal: 20,
     paddingTop: 20,
+    width: "90%",
   },
 });
