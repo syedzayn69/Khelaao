@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import saveFn from "../../utils/signupFn";
+import utilFns from "../../utils/signupFns";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Areas = [
@@ -35,19 +41,23 @@ const Areas = [
   { label: "Shah Faisal", value: "Shah Faisal" },
 ];
 
-const RegistrationForm = () => {
+const SectionOne = ({changePageFn}:any) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [area, setArea] = useState("");
 
-  function nextSection() {
-    saveFn({
-      name,
-      email,
-      area,
-    });
-  }
+  // function nextSection() {
+  //   utilFns.storeData(
+  //     {
+  //       name,
+  //       email,
+  //       area,
+  //     },
+  //     "sec1"
+  //   );
+  // }
+  // area && nextSection();
 
   return (
     <View style={styles.container}>
@@ -66,12 +76,14 @@ const RegistrationForm = () => {
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
+        <Text style={styles.label}>Area:</Text>
         <Dropdown
           style={styles.input}
           data={Areas}
           labelField="label"
           valueField="value"
-          placeholder={"Select Cites"}
+          placeholder={"Select Area"}
+          search={true}
           value={area}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
@@ -80,6 +92,9 @@ const RegistrationForm = () => {
             setIsFocus(false);
           }}
         />
+        <TouchableOpacity onPress={changePageFn} style={styles.btn}>
+          <Text style={styles.btnText}>Next</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -109,6 +124,20 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: "#fafafa",
   },
+  btn: {
+    backgroundColor: "#e78d46",
+    borderRadius: 5,
+    width: 200,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  btnText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 18,
+  },
 });
 
-export default RegistrationForm;
+export default SectionOne;

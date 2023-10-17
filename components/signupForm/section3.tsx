@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import saveFn from "../../utils/signupFn";
+import utilFns from "../../utils/signupFns";
 
 const playingRoleArr = [
   { label: "Top-order Batter", value: "Top-order Batter" },
@@ -31,20 +31,43 @@ const bowlingStyleArr = [
   { label: "None", value: "none" },
 ];
 
-const RegistrationForm = () => {
+const SectionThree = () => {
   const [isFocus, setIsFocus] = useState(false);
   const [playingRole, setPlayingRole] = useState("");
   const [battingStyle, setBattingStyle] = useState("");
   const [bowlingStyle, setBowlingStyle] = useState("");
 
+  // function nextSection() {
+  //   saveFn({
+  //     playingRole,
+  //     battingStyle,
+  //     bowlingStyle,
+  //   });
+  // Alert.alert("Registeration Successful!");
+  // }
   function nextSection() {
-    saveFn({
-      playingRole,
-      battingStyle,
-      bowlingStyle,
+    utilFns.storeData(
+      {
+        playingRole,
+        battingStyle,
+        bowlingStyle,
+      },
+      "sec3"
+    );
+  }
+  bowlingStyle && nextSection();
+
+  if (bowlingStyle) {
+    utilFns.getData("sec1").then((returnedData) => {
+      console.log("mydata1", returnedData);
+    });
+    utilFns.getData("sec2").then((returnedData) => {
+      console.log("mydata2", returnedData);
+    });
+    utilFns.getData("sec3").then((returnedData) => {
+      console.log("mydata3", returnedData);
     });
   }
-  // Alert.alert("Registeration Successful!");
 
   return (
     <View style={styles.container}>
@@ -92,6 +115,9 @@ const RegistrationForm = () => {
             setIsFocus(false);
           }}
         />
+        <TouchableOpacity onPress={()=> console.log('ended')} style={styles.btn}>
+          <Text style={styles.btnText}>Next</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -121,6 +147,20 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: "#fafafa",
   },
+  btn: {
+    backgroundColor: "#e78d46",
+    borderRadius: 5,
+    width: 200,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  btnText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 18,
+  },
 });
 
-export default RegistrationForm;
+export default SectionThree;

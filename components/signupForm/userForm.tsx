@@ -141,7 +141,6 @@ const RegistrationForm = ({ btnTitle }: any) => {
           style={styles.input}
           value={name}
           onChangeText={(text) => setName(text)}
-          autoFocus={true}
         />
 
         <Text style={styles.label}>Email:</Text>

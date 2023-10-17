@@ -1,34 +1,45 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TextInput, StyleSheet, ScrollView,TouchableOpacity } from "react-native";
 import DateOfBirthPicker from "./DateOfBirth";
 import { Dropdown } from "react-native-element-dropdown";
-import saveFn from "../../utils/signupFn";
+import utilFns from "../../utils/signupFns";
 
 const data = [
   { label: "Male", value: "Male" },
   { label: "Female", value: "Female" },
 ];
 
-const RegistrationForm = () => {
+const SectionTwo = ({changePageFn}:any) => {
   const [gender, setGender] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [contactNumber, setContactNumber] = useState("");
 
+  // function nextSection() {
+  //   saveFn({
+  //     gender,
+  //     dateOfBirth,
+  //     contactNumber,
+  //   });
+  // }
   function nextSection() {
-    saveFn({
-      gender,
-      dateOfBirth,
-      contactNumber,
-    });
+    utilFns.storeData(
+      {
+        gender,
+        dateOfBirth,
+        contactNumber,
+      },
+      "sec2"
+    );
   }
+  contactNumber && nextSection();
 
   const formatContactNumber = (text: any) => {
     // Remove non-numeric characters and keep only digits
     const cleaned = text.replace(/[^0-9]/g, "");
     // Check if the cleaned input matches the format (###) ###-####
     const match = /^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/.test(cleaned);
-    console.log(match);
+    // console.log(match);
 
     if (match) {
       // If it matches, format the input as (###) ###-####
@@ -47,13 +58,13 @@ const RegistrationForm = () => {
           style={styles.input}
           value={contactNumber}
           onChangeText={(text) => setContactNumber(formatContactNumber(text))}
-          placeholder="(+92)321 1234567"
+          placeholder="(+92) 321 1234567"
           keyboardType="phone-pad"
           autoFocus={true}
         />
         <DateOfBirthPicker onDateChange={setDateOfBirth} />
-        <Text style={styles.label}>Gender:</Text>
 
+        <Text style={styles.label}>Gender:</Text>
         <Dropdown
           style={styles.input}
           data={data}
@@ -68,6 +79,9 @@ const RegistrationForm = () => {
             setIsFocus(false);
           }}
         />
+        <TouchableOpacity onPress={changePageFn} style={styles.btn}>
+          <Text style={styles.btnText}>Next</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -86,7 +100,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
-    marginVertical: 10,
+    marginVertical: 20,
     padding: 8,
     borderRadius: 10,
   },
@@ -97,6 +111,20 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: "#fafafa",
   },
+  btn: {
+    backgroundColor: "#e78d46",
+    borderRadius: 5,
+    width: 200,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  btnText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 18,
+  },
 });
 
-export default RegistrationForm;
+export default SectionTwo;

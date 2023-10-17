@@ -26,8 +26,8 @@ const DateOfBirthPicker = ({ onDateChange }: any) => {
   };
 
   return (
-    <View>
-      <Text>Date of Birth:</Text>
+    <View style={{marginBottom:20}}>
+      <Text style={styles.label}>Date of Birth:</Text>
       <Button title={selectedDate} onPress={showDatePicker} />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -38,5 +38,12 @@ const DateOfBirthPicker = ({ onDateChange }: any) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  label:{
+    fontSize:16,
+    marginVertical:10
+  }
+})
 
 export default DateOfBirthPicker;

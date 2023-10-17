@@ -8,25 +8,36 @@ import {
   ImageBackground,
 } from "react-native";
 import Footer from "../components/loginPage/Footer";
-import Section1 from "../components/signupForm/signupForm";
+import Section1 from "../components/signupForm/section1";
 import Section2 from "../components/signupForm/section2";
 import Section3 from "../components/signupForm/section3";
 import HeadingLine from "../components/loginPage/Heading";
 import { useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function SignUpForm() {
-  const [page, setPage] = useState("sec1");
+  const [sec1, setSec1] = useState(true);
+  const [sec2, setSec2] = useState(false);
+  const [sec3, setSec3] = useState(false);
 
-  const nextSection = () => {
-    if (page === "sec1") setPage("sec2");
-    if (page === "sec2") setPage("sec3");
-    if (page === "sec2") setPage("sec3");
-    if (page === "sec3") {
-      setPage("sec1");
-      console.log("end");
-    }
-  };
+  function flipToPage2() {
+    setSec1(!sec1)
+    setSec2(!sec2)
+    console.log(sec1,sec2,sec3)
+  }
+  const flipToPage3 = () => {
+    setSec2(!sec2)
+    setSec3(!sec3)
+    console.log(sec1,sec2,sec3)
+  }
+  // const nextSection = () => {
+  //   if (page === "sec1") setPage("sec2");
+  //   if (page === "sec2") setPage("sec3");
+  //   if (page === "sec2") setPage("sec3");
+  //   if (page === "sec3") {
+  //     setPage("sec1");
+  //     console.log("end");
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,12 +52,10 @@ export default function SignUpForm() {
                 source={require("../assets/images/khelaaoPNG.png")}
               />
               <HeadingLine headingText={"REGISTER"} />
-              {page === "sec1" ? <Section1 /> : null}
-              {page === "sec2" ? <Section2 /> : null}
-              {page === "sec3" ? <Section3 /> : null}
-              <TouchableOpacity onPress={nextSection} style={styles.btn}>
-                <Text style={styles.btnText}>Next</Text>
-              </TouchableOpacity>
+              {sec1 ? <Section1 changePageFn={flipToPage2} /> : null}
+              {sec2 ? <Section2 changePageFn={flipToPage3} /> : null}
+              {sec3 ? <Section3 /> : null}
+              
             </View>
           </View>
         </ScrollView>
@@ -78,19 +87,5 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     padding: 15,
     borderRadius: 20,
-
-  },
-  btn: {
-    backgroundColor: "skyblue",
-    width: 200,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 20,
-  },
-  btnText: {
-    color: "white",
-    fontWeight: "600",
-    fontSize: 18,
-  },
+  }
 });
