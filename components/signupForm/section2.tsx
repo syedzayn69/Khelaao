@@ -93,7 +93,7 @@ const SectionTwo = ({ changePageFn }: any) => {
         />
         {errorMsg ? <ErrorBox message={errorMsg} /> : null}
         <TouchableOpacity onPress={btnPress} style={styles.btn}>
-          <Text style={styles.btnText}>Next</Text>
+          <Text style={styles.btnText}>{'>'}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: "#e78d46",
     borderRadius: 5,
-    width: 200,
+    width: 50,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
@@ -136,8 +136,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: "white",
-    fontWeight: "600",
-    fontSize: 18,
+    fontSize: 30,
   },
 });
 

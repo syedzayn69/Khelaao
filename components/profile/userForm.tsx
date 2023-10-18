@@ -8,7 +8,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import DateOfBirthPicker from "./DateOfBirth";
+import DateOfBirthPicker from "../signupForm/DateOfBirth";
 import { Dropdown } from "react-native-element-dropdown";
 
 const data = [
@@ -163,7 +163,9 @@ const RegistrationForm = ({ btnTitle }: any) => {
             setIsFocus(false);
           }}
         />
-        
+
+        <DateOfBirthPicker onDateChange={setDateOfBirth} />
+
         <Dropdown
           style={styles.input}
           data={data}
@@ -222,7 +224,9 @@ const RegistrationForm = ({ btnTitle }: any) => {
           }}
         />
       </ScrollView>
-      <Button title={btnTitle} onPress={handleSubmit} />
+      <View style={{ paddingVertical: 25 }}>
+        <Button title={btnTitle} onPress={handleSubmit} />
+      </View>
     </View>
   );
 };
@@ -231,7 +235,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: 300,
-    marginBottom: 100,
   },
   label: {
     fontSize: 16,

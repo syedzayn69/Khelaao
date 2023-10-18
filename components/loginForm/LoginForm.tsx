@@ -1,33 +1,50 @@
+import DigitsInput from "react-native-digits-input";
+import Btn from "./Btn";
+import utils from "../../utils/signupFns";
+
 import { router } from "expo-router";
 import { useState } from "react";
-import { TextInput, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { TextInput, Text, StyleSheet, View } from "react-native";
 
 export default function () {
   const [PhoneNumber, setPhoneNumber] = useState("");
+  const [OtpStatus, setOtpStatus] = useState(false);
+  const [Otp, setOtp] = useState("");
 
   const submitFn = () => {
-    console.log(PhoneNumber);
+    setOtpStatus(!OtpStatus);
+    console.log("Phonenumber", PhoneNumber);
+    console.log("OTP", Otp);
     setPhoneNumber("");
-    router.replace('/Profile')
+    
+    const verification = Otp
+    verification && router.replace('/Profile')
   };
 
   return (
     <>
-      <Text style={{ fontSize: 16, alignSelf: "flex-start" }}>
+      <Text style={{ fontSize: 16, alignSelf: "center" }}>
         Login In With Phone Number:
       </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Phone Number"
-        autoFocus={true}
-        maxLength={14}
-        value={PhoneNumber}
-        onChangeText={setPhoneNumber}
-        keyboardType="numeric"
-      />
-      <TouchableOpacity onPress={submitFn} style={styles.loginBtn}>
-        <Text style={{ fontSize: 20, color: "white" }}>Login</Text>
-      </TouchableOpacity>
+      <View style={styles.otp}>
+        {OtpStatus ? (
+          <DigitsInput
+            numberOfDigits={4}
+            onCodeChange={(text) => setOtp(text)}
+          />
+        ) : (
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Phone Number"
+            autoFocus={true}
+            maxLength={14}
+            value={PhoneNumber}
+            onChangeText={setPhoneNumber}
+            keyboardType="numeric"
+          />
+        )}
+      </View>
+      <Btn btnFn={submitFn} btnText={OtpStatus ? "Confirm OTP" : "Send OTP"} />
     </>
   );
 }
@@ -37,18 +54,14 @@ const styles = StyleSheet.create({
     margin: 20,
     marginBottom: 0,
     height: 34,
-    width: "100%",
+    width: 300,
     textAlign: "center",
     borderRadius: 4,
     borderColor: "grey",
     borderWidth: 1,
     fontSize: 16,
   },
-  loginBtn: {
-    marginVertical: 30,
-    width: "100%",
-    backgroundColor: "#e78d46",
-    alignItems: "center",
-    padding: 10,
+  otp: {
+    marginVertical: 16,
   },
 });

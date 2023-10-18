@@ -63,7 +63,7 @@ const SectionThree = () => {
       },
       "sec3"
     );
-    
+    utilFns.allFormData().then(elem => console.log(elem))
     Alert.alert("Registeration Successful!");
     router.replace("/");
   };
