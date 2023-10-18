@@ -9,6 +9,7 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 import utilFns from "../../utils/signupFns";
 import { ScrollView } from "react-native-gesture-handler";
+import ErrorBox from "../../utils/ErrorMsg";
 
 const Areas = [
   { label: "Gulberg", value: "Gulberg" },
@@ -41,23 +42,35 @@ const Areas = [
   { label: "Shah Faisal", value: "Shah Faisal" },
 ];
 
-const SectionOne = ({changePageFn}:any) => {
+const SectionOne = ({ changePageFn }: any) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [isFocus, setIsFocus] = useState(false);
   const [area, setArea] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // function nextSection() {
-  //   utilFns.storeData(
-  //     {
-  //       name,
-  //       email,
-  //       area,
-  //     },
-  //     "sec1"
-  //   );
-  // }
-  // area && nextSection();
+  const btnPress = () => {
+    {
+      const cleanedName = name.replace(/[^\w]/g, "");
+      const cleanedEmail = email.replace(/[^\w]/g, "");
+
+      if (!cleanedName || !cleanedEmail || !area) {
+        setErrorMsg("Please fill the required fields!");
+        setTimeout(() => setErrorMsg(""), 3000);
+        return;
+      }
+    }
+
+    changePageFn();
+    utilFns.storeData(
+      {
+        name,
+        email,
+        area,
+      },
+      "sec1"
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -74,6 +87,7 @@ const SectionOne = ({changePageFn}:any) => {
         <TextInput
           style={styles.input}
           value={email}
+          keyboardType="email-address"
           onChangeText={(text) => setEmail(text)}
         />
         <Text style={styles.label}>Area:</Text>
@@ -92,7 +106,8 @@ const SectionOne = ({changePageFn}:any) => {
             setIsFocus(false);
           }}
         />
-        <TouchableOpacity onPress={changePageFn} style={styles.btn}>
+        {errorMsg ? <ErrorBox message={errorMsg} /> : null}
+        <TouchableOpacity onPress={btnPress} style={styles.btn}>
           <Text style={styles.btnText}>Next</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -132,6 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,
+    alignSelf: "center",
   },
   btnText: {
     color: "white",

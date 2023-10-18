@@ -1,52 +1,64 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, ScrollView,TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import DateOfBirthPicker from "./DateOfBirth";
 import { Dropdown } from "react-native-element-dropdown";
 import utilFns from "../../utils/signupFns";
+import ErrorBox from "../../utils/ErrorMsg";
 
 const data = [
   { label: "Male", value: "Male" },
   { label: "Female", value: "Female" },
 ];
 
-const SectionTwo = ({changePageFn}:any) => {
+const SectionTwo = ({ changePageFn }: any) => {
+  const [contactNumber, setContactNumber] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
   const [isFocus, setIsFocus] = useState(false);
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // function nextSection() {
-  //   saveFn({
-  //     gender,
-  //     dateOfBirth,
-  //     contactNumber,
-  //   });
-  // }
-  function nextSection() {
+  const btnPress = () => {
+    {
+      if (!contactNumber || !gender || !dateOfBirth) {
+        setErrorMsg("Please fill the required fields!");
+        setTimeout(() => setErrorMsg(""), 3000);
+        return;
+      }
+    }
+
+    const cleaned = contactNumber.replace(/[^0-9]/g, "");
+    changePageFn();
     utilFns.storeData(
       {
-        gender,
         dateOfBirth,
-        contactNumber,
+        cleaned,
+        gender,
       },
       "sec2"
     );
-  }
-  contactNumber && nextSection();
+  };
 
   const formatContactNumber = (text: any) => {
-    // Remove non-numeric characters and keep only digits
-    const cleaned = text.replace(/[^0-9]/g, "");
-    // Check if the cleaned input matches the format (###) ###-####
-    const match = /^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/.test(cleaned);
-    // console.log(match);
-
-    if (match) {
-      // If it matches, format the input as (###) ###-####
-      return cleaned;
+    if (text.length === 11) {
+      setErrorMsg("");
+      if (text) {
+        // If it matches, format the input as (####) #######
+        const inputString = text;
+        const outputString = inputString.replace(/(\d{4})(\d{7})/g, "$1 $2");
+        return outputString;
+      } else {
+        return "";
+      }
     }
 
-    // If it doesn't match the format, return the input unchanged
+    setErrorMsg("Invalid Number Format");
     return;
   };
 
@@ -58,7 +70,7 @@ const SectionTwo = ({changePageFn}:any) => {
           style={styles.input}
           value={contactNumber}
           onChangeText={(text) => setContactNumber(formatContactNumber(text))}
-          placeholder="(+92) 321 1234567"
+          placeholder="(+92)/0 321 1234567"
           keyboardType="phone-pad"
           autoFocus={true}
         />
@@ -79,7 +91,8 @@ const SectionTwo = ({changePageFn}:any) => {
             setIsFocus(false);
           }}
         />
-        <TouchableOpacity onPress={changePageFn} style={styles.btn}>
+        {errorMsg ? <ErrorBox message={errorMsg} /> : null}
+        <TouchableOpacity onPress={btnPress} style={styles.btn}>
           <Text style={styles.btnText}>Next</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -119,6 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,
+    alignSelf: "center",
   },
   btnText: {
     color: "white",

@@ -22,23 +22,11 @@ export default function SignUpForm() {
   function flipToPage2() {
     setSec1(!sec1)
     setSec2(!sec2)
-    console.log(sec1,sec2,sec3)
   }
   const flipToPage3 = () => {
     setSec2(!sec2)
     setSec3(!sec3)
-    console.log(sec1,sec2,sec3)
   }
-  // const nextSection = () => {
-  //   if (page === "sec1") setPage("sec2");
-  //   if (page === "sec2") setPage("sec3");
-  //   if (page === "sec2") setPage("sec3");
-  //   if (page === "sec3") {
-  //     setPage("sec1");
-  //     console.log("end");
-  //   }
-  // };
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={"black"} />

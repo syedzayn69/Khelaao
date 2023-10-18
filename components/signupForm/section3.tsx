@@ -1,7 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert
+} from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import utilFns from "../../utils/signupFns";
+import ErrorBox from "../../utils/ErrorMsg";
 
 const playingRoleArr = [
   { label: "Top-order Batter", value: "Top-order Batter" },
@@ -32,20 +41,20 @@ const bowlingStyleArr = [
 ];
 
 const SectionThree = () => {
-  const [isFocus, setIsFocus] = useState(false);
   const [playingRole, setPlayingRole] = useState("");
   const [battingStyle, setBattingStyle] = useState("");
   const [bowlingStyle, setBowlingStyle] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
 
-  // function nextSection() {
-  //   saveFn({
-  //     playingRole,
-  //     battingStyle,
-  //     bowlingStyle,
-  //   });
-  // Alert.alert("Registeration Successful!");
-  // }
-  function nextSection() {
+  const btnPress = () => {
+    {
+      if (!playingRole || !battingStyle || !bowlingStyle) {
+        setErrorMsg("Please fill the required fields!");
+        setTimeout(() => setErrorMsg(""), 3000);
+        return;
+      }
+    }
     utilFns.storeData(
       {
         playingRole,
@@ -54,20 +63,10 @@ const SectionThree = () => {
       },
       "sec3"
     );
-  }
-  bowlingStyle && nextSection();
-
-  if (bowlingStyle) {
-    utilFns.getData("sec1").then((returnedData) => {
-      console.log("mydata1", returnedData);
-    });
-    utilFns.getData("sec2").then((returnedData) => {
-      console.log("mydata2", returnedData);
-    });
-    utilFns.getData("sec3").then((returnedData) => {
-      console.log("mydata3", returnedData);
-    });
-  }
+    
+    Alert.alert("Registeration Successful!");
+    router.replace("/");
+  };
 
   return (
     <View style={styles.container}>
@@ -115,8 +114,9 @@ const SectionThree = () => {
             setIsFocus(false);
           }}
         />
-        <TouchableOpacity onPress={()=> console.log('ended')} style={styles.btn}>
-          <Text style={styles.btnText}>Next</Text>
+        {errorMsg ? <ErrorBox message={errorMsg} /> : null}
+        <TouchableOpacity onPress={btnPress} style={styles.btn}>
+          <Text style={styles.btnText}>Create Account</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,
+    alignSelf: "center",
   },
   btnText: {
     color: "white",
