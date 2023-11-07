@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Alert,
-  ScrollView,
-} from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import DateOfBirthPicker from "../signupForm/DateOfBirth";
 import { Dropdown } from "react-native-element-dropdown";
 
@@ -43,7 +35,7 @@ const BowlingRole = [
   { label: "None", value: "none" },
 ];
 
-const Cities = [
+const Areas = [
   { label: "Gulberg", value: "Gulberg" },
   { label: "Liaquatabad", value: "Liaquatabad" },
   { label: "Nazimabad", value: "Nazimabad" },
@@ -80,15 +72,15 @@ const Cities = [
 const RegistrationForm = ({ btnTitle }: any) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [value, setValue] = useState("");
+  const [gender, setGender] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [numberValid, setNumberValid] = useState(false);
-  const [PlayingRole, SetPlayingRole] = useState("");
-  const [batstyle, setBatStyle] = useState("");
-  const [bowlingStyle, setBollingstyle] = useState("");
-  const [cities, setCities] = useState("");
+  const [PlayingRole, setPlayingRole] = useState("");
+  const [batstyle, setBattingStyle] = useState("");
+  const [bowlingStyle, setBowlingStyle] = useState("");
+  const [area, setArea] = useState("");
 
   const formatContactNumber = (text: any) => {
     // Remove non-numeric characters and keep only digits
@@ -111,121 +103,122 @@ const RegistrationForm = ({ btnTitle }: any) => {
     console.log({
       name,
       email,
-      value,
+      gender,
       dateOfBirth,
       contactNumber,
       numberValid,
       PlayingRole,
       batstyle,
       bowlingStyle,
-      cities,
+      area,
     });
 
     setName("");
     setEmail("");
-    setValue("");
+    setGender("");
     setDateOfBirth("");
     setContactNumber("");
-    SetPlayingRole("");
-    setBatStyle("");
-    setBollingstyle("");
-    setCities("");
+    setPlayingRole("");
+    setBattingStyle("");
+    setBowlingStyle("");
+    setArea("");
     Alert.alert("Data Added To Terminal");
   };
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.label}>Name:</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
+      <Text style={styles.label}>Name:</Text>
+      <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={(text) => setName(text)}
+        autoFocus={true}
+      />
 
-        <Text style={styles.label}>Email:</Text>
-        <TextInput
-          style={styles.input}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <Dropdown
-          style={styles.input}
-          data={Cities}
-          labelField="label"
-          valueField="value"
-          placeholder={" Select Cites"}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(iitems) => {
-            setCities(iitems.value);
-            setIsFocus(false);
-          }}
-        />
+      <Text style={styles.label}>Email:</Text>
+      <TextInput
+        style={styles.input}
+        value={email}
+        keyboardType="email-address"
+        onChangeText={(text) => setEmail(text)}
+      />
+      <Text style={styles.label}>Area:</Text>
+      <Dropdown
+        style={styles.input}
+        data={Areas}
+        labelField="label"
+        valueField="value"
+        placeholder={"Select Area"}
+        search={true}
+        value={area}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+          setArea(item.value);
+          setIsFocus(false);
+        }}
+      />
+      <DateOfBirthPicker onDateChange={setDateOfBirth} />
 
-        <DateOfBirthPicker onDateChange={setDateOfBirth} />
-
-        <Dropdown
-          style={styles.input}
-          data={data}
-          labelField="label"
-          valueField="value"
-          placeholder={"Select Gender"}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(item) => {
-            setValue(item.value);
-            setIsFocus(false);
-          }}
-        />
-        <Text style={styles.label}>Playing Role:</Text>
-        <Dropdown
-          style={styles.input}
-          data={playingRole}
-          labelField="label"
-          valueField="value"
-          placeholder={" Select playing Role"}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(items) => {
-            SetPlayingRole(items.value);
-            setIsFocus(false);
-          }}
-        />
-        <Dropdown
-          style={styles.input}
-          data={batStyle}
-          labelField="label"
-          valueField="value"
-          placeholder={" Select Batting Style"}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(Itemss) => {
-            setBatStyle(Itemss.value);
-            setIsFocus(false);
-          }}
-        />
-        <Dropdown
-          style={styles.input}
-          data={BowlingRole}
-          labelField="label"
-          valueField="value"
-          placeholder={" Select Bowling Style"}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(Itemsss) => {
-            setBollingstyle(Itemsss.value);
-            setIsFocus(false);
-          }}
-        />
-      </ScrollView>
-      <View style={{ paddingVertical: 25 }}>
-        <Button title={btnTitle} onPress={handleSubmit} />
+      <Dropdown
+        style={styles.input}
+        data={data}
+        labelField="label"
+        valueField="value"
+        placeholder={"Select Gender"}
+        value={gender}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+          setGender(item.value);
+          setIsFocus(false);
+        }}
+      />
+      <Text style={styles.label}>Playing Role:</Text>
+      <Dropdown
+        style={styles.input}
+        data={playingRole}
+        labelField="label"
+        valueField="value"
+        placeholder={" Select playing Role"}
+        value={PlayingRole}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(items) => {
+          setPlayingRole(items.value);
+          setIsFocus(false);
+        }}
+      />
+      <Dropdown
+        style={styles.input}
+        data={batStyle}
+        labelField="label"
+        valueField="value"
+        placeholder={" Select Batting Style"}
+        value={batstyle}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(Itemss) => {
+          setBattingStyle(Itemss.value);
+          setIsFocus(false);
+        }}
+      />
+      <Dropdown
+        style={styles.input}
+        data={BowlingRole}
+        labelField="label"
+        valueField="value"
+        placeholder={" Select Bowling Style"}
+        value={bowlingStyle}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(Itemsss) => {
+          setBowlingStyle(Itemsss.value);
+          setIsFocus(false);
+        }}
+      />
+      <View style={{marginVertical:20}}>
+        <Button title={btnTitle} onPress={handleSubmit}/>
       </View>
     </View>
   );

@@ -1,52 +1,99 @@
 import DigitsInput from "react-native-digits-input";
 import Btn from "./Btn";
 import utils from "../../utils/signupFns";
+import ErrorBox from "../../utils/ErrorMsg";
 
 import { router } from "expo-router";
 import { useState } from "react";
 import { TextInput, Text, StyleSheet, View } from "react-native";
 
 export default function () {
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [OtpStatus, setOtpStatus] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpStatus, setOtpStatus] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [Otp, setOtp] = useState("");
 
-  const submitFn = () => {
-    setOtpStatus(!OtpStatus);
-    console.log("Phonenumber", PhoneNumber);
-    console.log("OTP", Otp);
+  const submitNumberFn = () => {
+    const cleaned = phoneNumber.replace(/[^0-9]/g, "");
+
+    if (!cleaned || cleaned.length !== 11) {
+      setErrorMsg("Invalid Phone Number");
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 1500);
+      return;
+    }
+
+    console.log("Phonenumber", phoneNumber);
+
+    setOtpStatus(true);
     setPhoneNumber("");
-    
-    const verification = Otp
-    verification && router.replace('/Profile')
   };
 
-  return (
-    <>
-      <Text style={{ fontSize: 16, alignSelf: "center" }}>
-        Login In With Phone Number:
-      </Text>
-      <View style={styles.otp}>
-        {OtpStatus ? (
-          <DigitsInput
-            numberOfDigits={4}
-            onCodeChange={(text) => setOtp(text)}
-          />
-        ) : (
+  const submitOTPFn = () => {
+    if (Otp.length !== 4) {
+      setErrorMsg("Invalid OTP Number");
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 1500);
+      return;
+    }
+
+    console.log("OTP", Otp);
+    const verification = Otp;
+    verification && router.replace("/Feed/Profile");
+  };
+
+  const LoginScreen = () => {
+    return (
+      <>
+        <Text style={{ fontSize: 16, alignSelf: "center" }}>
+          Login In With Phone Number
+        </Text>
+        <View style={styles.FieldBox}>
           <TextInput
             style={styles.input}
             placeholder="Enter Phone Number"
             autoFocus={true}
             maxLength={14}
-            value={PhoneNumber}
+            value={phoneNumber}
             onChangeText={setPhoneNumber}
             keyboardType="numeric"
           />
-        )}
-      </View>
-      <Btn btnFn={submitFn} btnText={OtpStatus ? "Confirm OTP" : "Send OTP"} />
-    </>
-  );
+          {errorMsg ? (
+            <View style={{ width: 300, alignSelf: "center" }}>
+              <ErrorBox message={errorMsg} />
+            </View>
+          ) : null}
+        </View>
+        <Btn btnFn={submitNumberFn} btnText={"Send OTP"} />
+      </>
+    );
+  };
+
+  const OTPScreen = () => {
+    return (
+      <>
+        <Text style={{ fontSize: 16, alignSelf: "center" }}>
+          Enter OTP Code
+        </Text>
+        <View style={styles.FieldBox}>
+          <DigitsInput
+            numberOfDigits={4}
+            onCodeChange={(text) => setOtp(text)}
+          />
+          {errorMsg ? (
+            <View style={{ width: 200, alignSelf: "center" }}>
+              <ErrorBox message={errorMsg} />
+            </View>
+          ) : null}
+        </View>
+        <Btn btnFn={submitOTPFn} btnText={"Enter OTP"} />
+      </>
+    );
+  };
+
+  return <>{otpStatus ? OTPScreen() : LoginScreen()}</>;
 }
 
 const styles = StyleSheet.create({
@@ -61,7 +108,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     fontSize: 16,
   },
-  otp: {
+  FieldBox: {
     marginVertical: 16,
   },
 });

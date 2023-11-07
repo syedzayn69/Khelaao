@@ -1,15 +1,13 @@
-import { Text, View, SafeAreaView, StyleSheet, Image } from "react-native";
-
-import Header from "../components/profile/header";
-import HeadingLine from "../components/loginPage/Heading";
+import { Text, View, StyleSheet, Image } from "react-native";
+import HeadingLine from "../../components/loginPage/Heading";
 import { StatusBar } from "expo-status-bar";
-import UserDetails from "../components/profile/userForm";
+import UserDetails from "../../components/profile/userForm";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Profile() {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark"></StatusBar>
-      <Header HeaderText={"Profile"} />
+    <ScrollView style={styles.container}>
+      
       <View style={styles.body}>
         <View style={styles.formBorder}>
           <Image
@@ -24,7 +22,7 @@ export default function Profile() {
           <UserDetails btnTitle={"Save Edit"} />
         </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
@@ -41,10 +39,11 @@ const styles = StyleSheet.create({
   formBorder: {
     borderWidth: 1,
     borderRadius: 20,
-    borderColor:'grey',
+    borderColor: "grey",
     alignItems: "center",
     height: "95%",
     padding: 10,
+    marginBottom: 40,
   },
   profileHeading: {
     fontSize: 25,
