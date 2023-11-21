@@ -2,7 +2,8 @@ import Header from "../components/loginPage/Header";
 import Heading from "../components/loginPage/Heading";
 import BtnContainer from "../components/loginPage/BtnContainer";
 import Footer from "../components/loginPage/Footer";
-
+import services from "../services/signup";
+import { useEffect } from "react";
 import { StyleSheet, View, SafeAreaView } from "react-native";
 
 export default function App() {

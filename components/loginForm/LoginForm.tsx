@@ -1,10 +1,10 @@
 import DigitsInput from "react-native-digits-input";
 import Btn from "./Btn";
-import utils from "../../utils/signupFns";
+import services from "../../services/signup";
 import ErrorBox from "../../utils/ErrorMsg";
 
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextInput, Text, StyleSheet, View } from "react-native";
 
 export default function () {
@@ -15,7 +15,6 @@ export default function () {
 
   const submitNumberFn = () => {
     const cleaned = phoneNumber.replace(/[^0-9]/g, "");
-
     if (!cleaned || cleaned.length !== 11) {
       setErrorMsg("Invalid Phone Number");
       setTimeout(() => {
@@ -23,11 +22,26 @@ export default function () {
       }, 1500);
       return;
     }
-
-    console.log("Phonenumber", phoneNumber);
-
-    setOtpStatus(true);
-    setPhoneNumber("");
+    services
+      .login(phoneNumber)
+      .then((res) => {
+        console.log("submitFn", res);
+        setOtpStatus(true);
+        setPhoneNumber("");
+      })
+      .catch((error) => {
+        if (error.message === "Request failed with status code 404") {
+          setErrorMsg("User not found!");
+          setTimeout(() => {
+            setErrorMsg("");
+          }, 1500);
+        } else {
+          setErrorMsg("Server Error");
+          setTimeout(() => {
+            setErrorMsg("");
+          }, 1500);
+        }
+      });
   };
 
   const submitOTPFn = () => {

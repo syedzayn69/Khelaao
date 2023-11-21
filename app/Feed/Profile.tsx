@@ -1,13 +1,11 @@
 import { Text, View, StyleSheet, Image } from "react-native";
 import HeadingLine from "../../components/loginPage/Heading";
-import { StatusBar } from "expo-status-bar";
 import UserDetails from "../../components/profile/userForm";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function Profile() {
   return (
     <ScrollView style={styles.container}>
-      
       <View style={styles.body}>
         <View style={styles.formBorder}>
           <Image
